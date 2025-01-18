@@ -1,19 +1,16 @@
 services:
   app:
-    build: app
-    volumes:
-      - ./app:/app
-      - tmp_data:/app/tmp
+    build: .
     ports:
-      - "${EXPOSE_PORT}:8080"
-    environment:
-      - GOPROXY=${GOPROXY}
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
+      - "${EXPOSE_APP_PORT}:8080"
+    tty: true
+    stdin_open: true
     depends_on:
       - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_ROOT_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
   db:
     image: mysql:latest
@@ -23,4 +20,9 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
     ports:
-      - "${EXPOSE_PORT}:8080"
+      - "${EXPOSE_DATABASE_PORT}:8080"
+    volumes:
+      - db-store:/var/lib/mysql
+
+volumes:
+  db-store:
