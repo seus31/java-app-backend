@@ -12,7 +12,7 @@ import java.util.List;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public List<Todo> getAllTodos() {
+    public List<Todo> getTodos() {
         return todoRepository.findAll();
     }
 

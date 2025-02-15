@@ -16,8 +16,8 @@ public class TodoController {
     private final TodoService todoService;
 
     @QueryMapping
-    public List<Todo> getAllTodos() {
-        return todoService.getAllTodos();
+    public List<Todo> getTodos() {
+        return todoService.getTodos();
     }
 
     @MutationMapping
